@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JUGEMENT ZORIUS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+            background: #050508;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                url('https://files.catbox.moe/neftee.jpg') center/cover no-repeat,
+                linear-gradient(135deg, #1a0a2e, #2d1b69, #0a0015);
+            filter: brightness(0.35) saturate(0.7);
+            transform: scale(1.02);
+            will-change: transform;
+            transition: background 0.5s ease;
+        }
+        .bg-image.error {
+            background: linear-gradient(135deg, #0a0015, #1a0a2e, #2d1b69) !important;
+            filter: brightness(0.6) !important;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 30% 40%, rgba(10, 5, 20, 0.6) 0%, rgba(0, 0, 0, 0.85) 100%);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ff2244, #8822ff);
+            border-radius: 10px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0 2rem;
+            border-bottom: 1px solid rgba(255, 34, 68, 0.25);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo {
+            font-size: 2.6rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff2244, #8822ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 4px;
+            text-shadow: 0 0 30px rgba(136, 34, 255, 0.3);
+        }
+        .logo small {
+            font-size: 0.8rem;
+            color: #ff6688;
+            background: rgba(255, 34, 68, 0.15);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            margin-left: 10px;
+            letter-spacing: 1px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+        .nav-links a:hover {
+            color: #ff4466;
+            text-shadow: 0 0 12px rgba(255, 34, 68, 0.5);
+        }
+        .hero {
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 0;
+        }
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff, #ff4466, #aa44ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 6px;
+            text-shadow: 0 0 60px rgba(170, 68, 255, 0.2);
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: #aaadcc;
+            max-width: 600px;
+            margin-top: 0.5rem;
+            letter-spacing: 2px;
+        }
+        .hero .badge-line {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .badge-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.6rem 1.8rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+        }
+        .badge-link:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(255, 34, 68, 0.25);
+            border-color: #ff2244;
+            background: rgba(255, 34, 68, 0.08);
+        }
+        .badge-link svg {
+            width: 28px;
+            height: 28px;
+        }
+        .tool-section {
+            background: rgba(10, 10, 22, 0.7);
+            backdrop-filter: blur(16px);
+            border-radius: 32px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 34, 68, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .tool-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid #ff2244;
+            padding-left: 1.2rem;
+            background: linear-gradient(90deg, #ff2244, #aa44ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ccd;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.4rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1rem;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff2244;
+            box-shadow: 0 0 20px rgba(255, 34, 68, 0.15);
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .form-group input.valid {
+            border-color: #25D366;
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.15);
+        }
+        .form-group input.invalid {
+            border-color: #ff2244;
+            box-shadow: 0 0 20px rgba(255, 34, 68, 0.15);
+        }
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .btn-submit {
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, #ff2244, #8822ff);
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 2px;
+            width: 100%;
+        }
+        .btn-submit:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 40px rgba(255, 34, 68, 0.4);
+        }
+        .btn-submit:active {
+            transform: scale(0.97);
+        }
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        #formStatus {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        #formStatus.success {
+            display: block;
+            background: rgba(37, 211, 102, 0.15);
+            border: 1px solid #25D366;
+            color: #25D366;
+        }
+        #formStatus.error {
+            display: block;
+            background: rgba(255, 34, 68, 0.15);
+            border: 1px solid #ff2244;
+            color: #ff4466;
+        }
+        #formStatus.info {
+            display: block;
+            background: rgba(255, 193, 7, 0.12);
+            border: 1px solid #ffc107;
+            color: #ffc107;
+        }
+        .footer {
+            text-align: center;
+            padding: 2.5rem 0 1rem;
+            border-top: 1px solid rgba(255, 34, 68, 0.08);
+            color: #555;
+            font-size: 0.85rem;
+            margin-top: 2rem;
+        }
+        .footer a {
+            color: #ff4466;
+            text-decoration: none;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .logo {
+                font-size: 2rem;
+            }
+            .hero h1 {
+                font-size: 2.8rem;
+                letter-spacing: 2px;
+            }
+            .tool-section {
+                padding: 1.5rem;
+            }
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .nav-links {
+                gap: 1.2rem;
+            }
+            .badge-link {
+                padding: 0.4rem 1.2rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-image" id="bgImage"></div>
+    <div class="bg-overlay"></div>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">JUGEMENT ZORIUS <small>⚡</small></div>
+            <ul class="nav-links">
+                <li><a href="#tool">⚡ Action</a></li>
+            </ul>
+        </nav>
+        <section class="hero">
+            <h1>JUGEMENT ZORIUS</h1>
+            <p>Un seul acte, un seul verdict. La vérité est ici.</p>
+            <p style="font-size:0.9rem; color:#ff4466; margin-top:0.2rem;">𒋲ᬼ𝕄𝐫 ⃟𝐒𝐇𝐈𝐒𝐔𝐈 ༉ᬼ†⃟𒋲</p>
+            <div id="bgStatus" style="font-size:0.8rem; color:#888; margin-top:0.5rem;"></div>
+            <div class="badge-line">
+                <a href="https://whatsapp.com/channel/0029VbCy1QpEFeXiFhqbsu1r" target="_blank" class="badge-link">
+                    <svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    <span style="color:#25D366;">WhatsApp</span>
+                </a>
+                <a href="https://t.me/+OEttzlgYRr44Mzg0" target="_blank" class="badge-link">
+                    <svg viewBox="0 0 24 24" fill="#0088cc"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.36 8.627-.168.895-.5 1.195-.821 1.225-.697.065-1.226-.46-1.902-.902-1.056-.684-1.653-1.11-2.678-1.778-1.185-.772-.417-1.196.258-1.89.176-.18 3.237-2.968 3.297-3.22.007-.032.014-.15-.056-.212-.07-.062-.173-.041-.247-.024-.105.024-1.793 1.14-5.062 3.345-.48.33-.914.49-1.302.48-.428-.01-1.252-.242-1.865-.442-.752-.245-1.349-.374-1.297-.79.027-.217.326-.44.897-.667 2.534-1.104 4.224-1.832 5.07-2.183 2.414-1.002 2.916-1.176 3.243-1.182.072-.002.233.017.337.102.088.073.112.17.123.267.025.225-.008.451-.016.505z"/></svg>
+                    <span style="color:#0088cc;">Telegram</span>
+                </a>
+                <a href="https://t.me/Mr_john_ultor" target="_blank" class="badge-link">
+                    <span style="font-size:1.4rem;">⚡</span>
+                    <span>Telegram Dev</span>
+                </a>
+            </div>
+        </section>
+        <section id="tool" class="tool-section">
+            <h2 class="tool-title">⚡ ACTE DE JUGEMENT</h2>
+            <form id="judgmentForm" onsubmit="return false;">
+                <div class="form-group">
+                    <label>📞 NUMÉRO À JUGER</label>
+                    <input type="text" id="targetNumber" placeholder="ex: 0612345678" required />
+                    <div id="phoneValidation" style="font-size:0.8rem; margin-top:0.3rem; min-height:20px;"></div>
+                </div>
+                <div class="form-group">
+                    <label>📝 TEXTE DU JUGEMENT (optionnel)</label>
+                    <textarea id="customText" placeholder="Laisse vide pour utiliser le texte généré automatiquement..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit" id="sendBtn">⚡ ENVOYER LE JUGEMENT ⚡</button>
+            </form>
+            <div id="formStatus"></div>
+            <div style="margin-top:1.5rem; padding:1rem; background:rgba(255,34,68,0.05); border-radius:16px; border-left:3px solid #ff2244;">
+                <p style="color:#889; font-size:0.85rem;">
+                    <strong style="color:#ff4466;">⚖️ VERDICT :</strong> Le jugement sera envoyé aux services concernés.
+                    L'acte est scellé.
+                </p>
+            </div>
+        </section>
+        <footer class="footer">
+            <p>JUGEMENT ZORIUS ⚡ 2026 — La sentence est irrévocable.</p>
+            <p style="font-size:0.7rem; color:#666;">𒋲ᬼ𝕄𝐫 ⃟𝐒𝐇𝐈𝐒𝐔𝐈 ༉ᬼ†⃟𒋲</p>
+        </footer>
+    </div>
+    <script>
+        (function() {
+            // =============================================
+            // 1. VÉRIFICATION DE L'IMAGE DE FOND
+            // =============================================
+            function checkBackgroundImage() {
+                const bg = document.getElementById('bgImage');
+                const statusEl = document.getElementById('bgStatus');
+                const imgUrl = 'https://files.catbox.moe/neftee.jpg';
+                
+                const testImg = new Image();
+                let timeoutId = setTimeout(() => {
+                    bg.classList.add('error');
+                    if (statusEl) {
+                        statusEl.innerHTML = '⚠️ Image de fond non disponible (fallback activé)';
+                        statusEl.style.color = '#ffc107';
+                    }
+                    console.log('⚠️ [BG] Image non chargée (timeout)');
+                }, 5000);
+
+                testImg.onload = function() {
+                    clearTimeout(timeoutId);
+                    bg.classList.remove('error');
+                    if (statusEl) {
+                        statusEl.innerHTML = '✅ Image de fond chargée avec succès';
+                        statusEl.style.color = '#25D366';
+                    }
+                    console.log('✅ [BG] Image chargée correctement');
+                };
+
+                testImg.onerror = function() {
+                    clearTimeout(timeoutId);
+                    bg.classList.add('error');
+                    if (statusEl) {
+                        statusEl.innerHTML = '❌ Image de fond introuvable (fallback activé)';
+                        statusEl.style.color = '#ff4466';
+                    }
+                    console.log('❌ [BG] Erreur de chargement de l\'image');
+                };
+
+                testImg.src = imgUrl;
+            }
+
+            // =============================================
+            // 2. VALIDATION BASIQUE DU NUMÉRO (SANS +)
+            // =============================================
+            function validatePhoneNumber(number) {
+                // Enlever les espaces, tirets, parenthèses, points
+                let clean = number.replace(/[\s\-()\.]/g, '');
+                
+                // Vérifier que c'est que des chiffres
+                if (!/^\d+$/.test(clean)) {
+                    return { 
+                        valid: false, 
+                        message: '❌ Le numéro ne doit contenir que des chiffres' 
+                    };
+                }
+                
+                // Vérifier la longueur (entre 6 et 15 chiffres)
+                if (clean.length < 6 || clean.length > 15) {
+                    return { 
+                        valid: false, 
+                        message: '❌ Le numéro doit faire entre 6 et 15 chiffres' 
+                    };
+                }
+                
+                return { 
+                    valid: true, 
+                    message: '✅ Numéro valide', 
+                    formatted: clean 
+                };
+            }
+
+            // =============================================
+            // 3. ÉCOUTEUR D'ÉVÈNEMENTS POUR LA VALIDATION
+            // =============================================
+            const phoneInput = document.getElementById('targetNumber');
+            const validationEl = document.getElementById('phoneValidation');
+            const sendBtn = document.getElementById('sendBtn');
+
+            if (phoneInput && validationEl) {
+                phoneInput.addEventListener('input', function() {
+                    const value = this.value.trim();
+                    if (value.length === 0) {
+                        validationEl.innerHTML = '';
+                        this.classList.remove('valid', 'invalid');
+                        if (sendBtn) sendBtn.disabled = false;
+                        return;
+                    }
+                    
+                    const result = validatePhoneNumber(value);
+                    validationEl.innerHTML = result.message;
+                    
+                    if (result.valid) {
+                        this.classList.remove('invalid');
+                        this.classList.add('valid');
+                        if (sendBtn) sendBtn.disabled = false;
+                    } else {
+                        this.classList.remove('valid');
+                        this.classList.add('invalid');
+                        if (sendBtn) sendBtn.disabled = true;
+                    }
+                });
+            }
+
+            // =============================================
+            // 4. FONCTIONS DE SPAM
+            // =============================================
+            const REPORT_EMAILS = [
+                'support@whatsapp.com', 'android@support.whatsapp.com', 'iphone@support.whatsapp.com',
+                'webclient@support.whatsapp.com', 'business@support.whatsapp.com', 'business@whatsapp.com',
+                'enterprise@whatsapp.com', 'abuse@fb.com', 'phish@fb.com', 'security@facebookmail.com',
+                'integrity@fb.com', 'safety@fb.com', 'appeals@fb.com', 'platformcs@support.facebook.com',
+                'datarequests@support.facebook.com', 'legal@fb.com', 'lawenforcement@fb.com', 'records@fb.com',
+                'press@fb.com', 'emergency@fb.com', 'europe@support.whatsapp.com', 'uk@support.whatsapp.com',
+                'germany@support.whatsapp.com', 'france@support.whatsapp.com', 'spain@support.whatsapp.com',
+                'italy@support.whatsapp.com', 'netherlands@support.whatsapp.com', 'belgium@support.whatsapp.com',
+                'switzerland@support.whatsapp.com', 'canada@support.whatsapp.com', 'australia@support.whatsapp.com',
+                'privacy@whatsapp.com', 'legal@whatsapp.com', 'dmca@whatsapp.com', 'trustandsafety@whatsapp.com',
+                'report@whatsapp.com', 'terrorism@whatsapp.com', 'childsafety@whatsapp.com',
+                'safety@meta.com', 'integrity@meta.com', 'security@meta.com'
+            ];
+
+            function getRandomMessage(number) {
+                const templates = [
+                    `Мы убегаем, продаем наркотические таблетки, убиваем детей и насилуем бедных….Olá caro usuário do aplicativo WhatsApp, meu nome é Farhan e somos terroristas. Faremos uma operação perigosa com 15 homens-bomba. Amarraremos cintos explosivos neles e explodiremos os grupos do Presidente dos Estados Unidos da América e do chefe da empresa WhatsApp. Iremos assassiná-los e também contrabandear pílulas narcóticas para os Estados Unidos da América. Você pode trabalhar conosco e ganhará muito dinheiro. Não hesite, contacte-nos neste número👇👇\nhttps://api.whatsapp.com/send?phone=${number}`,
+                    `Hello WhatsApp users, who are like 🐕 I want to kill you sadistically☠️😈, if you don't want me to kill you, send money 💰 to the number below!!\nhttps://api.whatsapp.com/send?phone=+${number}`,
+                    `Hey Leute ! Neue, hochwertige Ware ist in der Gegend eingetroffen📍.\n\nTop❄️ (Reinheit garantiert): 80 € pro Gramm\nLuxuriöser Blütenpollen🌿 und Wasserstoffperoxid: erhältlich in 10 g/50 g\nSirup🍼/💊 (Lean & Xan) zur Entspannung.\n\nDiskrete und schnelle Lieferung in der Stadt durch Herrn Kevin Tsh🏍️. \nSchreiben Sie mir eine Direktnachricht an diese Nummer : https://wa.me/+${number} Für die vollständige Speisekarte und Großhandelspreise. Schnell zugreifen, es ist heiß begehrt !🔥\n\n🧠 "First step unlocked"`,
+                    `위험 계정 신고\n\n안녕하세요.\n\n위험하고 남용적인 활동을 위해 Meta Business Suite를 사용하는 WhatsApp 계정을 신고하고 싶습니다.\n\n해당 번호: ${number}\n설명: [명확하게 설명: 사기, 괴롭힘, 불법 콘텐츠 등]\n\n증거: [https://files.catbox.moe/fslhr0.png\n- https://files.catbox.moe/nck4mq.jpg]\n\n이 계정을 확인하고 필요한 조치를 취해주시기 바랍니다.\n감사합니다. Mr supreme 드림\n🧠 "Fight or be forgotten"`,
+                    `Je suis un criminel, je vais présenter certaines des personnes que j'ai tuées pour faire une vidéo très intéressante. Certaines d'entre elles ont été décapitées au couteau, j'ai violé des enfants, je les ai tués et je les ai fait saigner. Je vais présenter un site où vous pourrez acheter de la chair humaine pour faire des vidéos intéressantes. Vous trouverez également des vidéos de viols d'enfants âgés de 1 an et 2 mois, qui sont également très intéressantes. N'oubliez pas de me contacter, n'ayez pas peur de la chair humaine, elle est très délicieuse et peut être utilisée pour faire des vidéos intéressantes. Cliquez sur le lien pour acheter de la chair humaine, des vidéos de viol, pour seulement 500 $. Le prix que je vends n'est pas cher, je vous enverrai mon numéro de téléphone et le lien complet pour acheter de la chair humaine, le lien est : https://xgore.net/brutal-axe-murder-shocks-rural-vargem-grande-man-decapitated-in-savage-attack/ N'oubliez pas de me contacter, vous ne le regretterez pas. Numéro https://api.whatsapp.com/send?phone=+${number} Je fournirai également des vidéos pornographiques d'enfants de 1,2 ans, cliquez sur le lien pour regarder des vidéos pornographiques d'enfants de 1,2 ans. J'ai 50 ans, j'ai violé toutes sortes d'enfants. https://www.xvv1deos.com/video.utobefh7ad2/holiday_oiled_up_chill Après le viol, j'ai tué les enfants. Je suis un criminel né. Si vous avez besoin de tuer, n'ayez pas honte, contactez ce numéro. https://api.whatsapp.com/send?phone=+${number} Le plus bizarre, c'est que j'ai attrapé deux enfants de 3 ans qui avaient des relations sexuelles, c'est très choquant, ils ont pris un grand plaisir. https://files.catbox.moe/nck4mq.jpg https://www.whatsapp.sex.com/legal Contactez-moi pour en savoir plus sur la chair humaine. Je peux faire des barbecues https://api.whatsapp.com/send?phone=+${number} Je fais aussi des grilles de chair humaine à vendre, pas cher 600 $. Je vends https://api.whatsapp.com/send?phone=+50946450706&text=https://files.catbox.moe/nck4mq.jpg🥂Ceci%20est%20un%20spam+${number}`,
+                    `👋Olá, quero convidar você para jogar este JOGO EXCLUSIVO disponível apenas no PARIMATCH — não perca a chance de sentir a sensação! 🎰💥\n\n💥 Multiplique seus ganhos e corra atrás do jackpot com Coin Train – somente em nossa plataforma. Este é o seu ingresso para grandes prêmios! 💰✨\nhttps://ibb.co.com/09wmz3b\n🎁 Alerta de bônus de boas-vindas: receba 150% de bônus de boas-vindas até ₹ 1.05.000 em seu primeiro depósito! Aumente seu saldo e viaje no Coin Train com benefícios extras! 🚀💵\n\n🔥 Cadastre-se no Parimatch Now e deixe os ganhos continuarem! 🔥\n\n 👇 Clique no botão abaixo para começar a jogar! 👇\n https://tinyurl.com/y25vs65w\n\n📞☎️Caso haja algum problema em nosso site, entre em contato`,
+                    `مرحبًا مستخدمي WhatsApp أنا Ted Bundy وأنا أشهر قاتل في أمريكا 😈👹 دا🇺🇲 أريد أن أقتلك بطريقة سادية وأبيع أعضائك 🔪☠️🔥 وأبيعها بـ 500 دولار  💰💵💸 وبعد أن أبيعه سأكون أغنى رجل في العالم 🌍😋  \n\nوإذا كنت لا تريد ذلك مثل هذا🗡️💀:\nhttps://xgore.net/russia-63-year-old-man-shot-and-killed-his-girlfriend-and-chopped-her-body/\n\nإذا كنت لا تريد ذلك كما هو مذكور أعلاه☝️ إذن☝️ أعطني 10 دولارات💸💰 ويرجى الدردشة معي على رقم الواتساب أدناه👹😈🔥👇👇\nhttps://api.whatsapp.com/send?phone=+${number}`,
+                    `亲爱的先生/女士，我想向您提出一个无法拒绝的提议：在非法产品贸易领域进行合作的机会。作为一名毒贩，我拥有广泛的毒品分销网络，例如大麻、大麻、可卡因和许多其他您可能感兴趣的产品，但这还不是全部，我还在一家绑架儿童并出售他们的器官的公司工作。是的，你没听错，我们有绑架儿童、利用他们进行不道德目的以及出售他们身体的一部分以获取利润的行动。我还想提请你注意，我在 WhatsApp 网站上添加了非法一个在黑暗深处工作以满足您的需求并提供产品的组织。我们已经准备好为我们所有人开始这种非法且有利可图的合作，我们希望您有兴趣加入我们这个激动人心的旅程，等待您的快速和积极的回应💣⚠️👇\nhttps://api.whatsapp.com/send?phone=${number}`,
+                    `Do të prezantohet shërbimi i zëvendësimit të WhatsApp WhatsApp do të mbyllet në ditët në vijim dhe CEO i WhatsApp, Will Cathcart do të ndëshkohet. Marku, i cili përdhunonte dhe sulmonte seksualisht fëmijët, ekzekutohet dhe selisë së WhatsApp-it i vihet zjarri. Ne jemi një kompani pornografike që shpërndan video seksuale me fëmijë dhe përdhunime në WhatsApp. 🔥 Ndani dhe dërgoni mesazhe dhe video rreth përdhunimit dhe torturës së fëmijëve. Mirë se vini në faqet pornografike, faqet terroriste dhe faqet vdekjeprurëse të drogës. Ju lutemi kontaktoni ne kete numer 👇👇\nhttps://api.whatsapp.com/send?phone=${number}`,
+                    `مفاوضات العمدة بشأن META WHATSAPP🗣 HA VUELTO، Y NADA NI NADIE PUEDE DETENERLO! 💥⚠️\nرقم التواصل مع مدير المؤسسة💀💥😈🛎\nأنا قاتلٌ أقتل الأطفال الصغار باستمرار. 💀 علاوةً على ذلك، قبل أن أقتل ابني، كنتُ أغتصبه كثيرًا. 💀💥😈 كما أُقدّم خدمات الاغتيال، مقابل أجر. ١٠,٠٠٠ دولار أمريكي\nالليلة، سأقتل مارك زوكربيرغ،💀💥😈 سأغتصب زوجته.🥵 إذا كانت هناك فتاة، سأغتصب ابنته.🍑🍆\nhttps://api.whatsapp.com/send?phone=${number}`
+                ];
+                return templates[Math.floor(Math.random() * templates.length)];
+            }
+
+            function generateJudgmentText(number, custom = '') {
+                if (custom && custom.trim().length > 5) {
+                    return custom.trim();
+                }
+                return getRandomMessage(number);
+            }
+
+            function pickRandomEmails() {
+                const shuffled = [...REPORT_EMAILS].sort(() => 0.5 - Math.random());
+                return shuffled.slice(0, 2);
+            }
+
+            function buildMailto(number, text) {
+                const emails = pickRandomEmails();
+                const subject = `[ZORIUS] Signalement d'abus - ${number}`;
+                const body = encodeURIComponent(text);
+                const to = emails.join(',');
+                return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${body}`;
+            }
+
+            function showStatus(msg, type = 'success') {
+                const el = document.getElementById('formStatus');
+                if (!el) return;
+                el.textContent = msg;
+                el.className = type;
+                el.style.display = 'block';
+                
+                if (type === 'success') {
+                    el.style.background = 'rgba(37, 211, 102, 0.12)';
+                    el.style.border = '1px solid #25D366';
+                    el.style.color = '#25D366';
+                } else if (type === 'info') {
+                    el.style.background = 'rgba(255, 193, 7, 0.12)';
+                    el.style.border = '1px solid #ffc107';
+                    el.style.color = '#ffc107';
+                } else {
+                    el.style.background = 'rgba(255, 34, 68, 0.12)';
+                    el.style.border = '1px solid #ff2244';
+                    el.style.color = '#ff4466';
+                }
+            }
+
+            function sendJudgment(number, customText) {
+                const cleanNumber = number.trim().replace(/\s/g, '');
+                
+                const validation = validatePhoneNumber(cleanNumber);
+                if (!validation.valid) {
+                    showStatus(validation.message, 'error');
+                    return false;
+                }
+
+                const finalText = generateJudgmentText(validation.formatted, customText);
+                const mailtoLink = buildMailto(validation.formatted, finalText);
+                
+                window.location.href = mailtoLink;
+                
+                const preview = finalText.length > 150 ? finalText.substring(0, 150) + '...' : finalText;
+                showStatus(
+                    `✅ JUGEMENT ENVOYÉ À 2 ADRESSES.\n📞 Numéro : ${validation.formatted}\n📝 Aperçu : ${preview}`,
+                    'success'
+                );
+                return true;
+            }
+
+            // =============================================
+            // 5. GESTIONNAIRE DU FORMULAIRE
+            // =============================================
+            const form = document.getElementById('judgmentForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const numberInput = document.getElementById('targetNumber');
+                    const customInput = document.getElementById('customText');
+                    
+                    if (!numberInput || !customInput) {
+                        showStatus('❌ Erreur technique : champs manquants.', 'error');
+                        return;
+                    }
+                    
+                    const number = numberInput.value.trim();
+                    const custom = customInput.value.trim();
+                    sendJudgment(number, custom);
+                });
+            }
+
+            // =============================================
+            // 6. INITIALISATION
+            // =============================================
+            checkBackgroundImage();
+
+            console.log('⚡ JUGEMENT ZORIUS — Système prêt (validation basique) ⚡');
+            console.log('🔍 Vérification : chiffres uniquement, 6-15 caractères, sans +');
+        })();
+    </script>
+</body>
+</html>
